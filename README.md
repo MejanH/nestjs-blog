@@ -4,6 +4,11 @@
 docker run -p 3306:3306 --name nestjs-blog -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=test -d mysql
 ```
 
+### Typeorm
+
+- generate migrations: `pn migration:gen ./src/migrations/user-table`
+- run migrations: `pn migration:run`
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

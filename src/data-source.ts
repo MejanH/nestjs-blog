@@ -1,16 +1,15 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { Post } from './posts/entities/post.entity';
 import * as path from 'node:path';
+import { User } from './users/entities/user.entity';
 
-export const typeOrmDataSource: DataSourceOptions = {
+export const AppDataSource = new DataSource({
   type: 'mysql',
   host: 'localhost',
   port: 3306,
   username: 'root',
   password: 'root',
   database: 'test',
-  entities: [Post],
+  entities: [path.resolve('./src/**/entities/*.entity.ts')],
   migrations: [path.resolve('./src/migrations/*.ts')],
-};
-
-export const AppDataSource = new DataSource(typeOrmDataSource);
+});
