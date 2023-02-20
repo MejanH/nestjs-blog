@@ -1,7 +1,5 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { Post } from './posts/entities/post.entity';
 import * as path from 'node:path';
-import { User } from './users/entities/user.entity';
+import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',

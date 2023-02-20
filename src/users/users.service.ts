@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +13,20 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create({ username, password }: CreateUserDto) {
+    if (username && password) {
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      const user = this.usersRepository.create({
+        username,
+        password: hashedPassword,
+      });
+      return await this.usersRepository.save(user);
+    } else {
+      throw new HttpException(
+        'username & password is required',
+        HttpStatus.FORBIDDEN,
+      );
+    }
   }
 
   findAll() {
@@ -28,7 +41,9 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.usersRepository.delete({
+      id,
+    });
   }
 }
